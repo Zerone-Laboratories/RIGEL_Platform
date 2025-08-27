@@ -1,14 +1,15 @@
 "use client";
 
 import Image from "next/image";
-import Button from "./components/button";
+import Button from "../../components/button";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
-export default function Home() {
+export default function Login() {
   const router = useRouter();
 
-  const handleNavigation = () => {
-    router.push("/login");
+  const handleRegister = () => {
+    router.push("/register");
   };
 
   return (
@@ -17,15 +18,23 @@ export default function Home() {
         <Image
           className="mx-auto"
           src="/logo_without_text.svg"
-          alt="Next.js logo"
-          width={500}
-          height={500}
+          alt="Rigel logo"
+          width={200}
+          height={200}
           priority
         />
         <h1 className="text-4xl sm:text-5xl font-regular text-center">
-          Welcome to <span className="font-bold">RIGEL</span> API platform !
+          Log in to <span className="font-bold">RIGEL</span>
         </h1>
-        <Button onClick={handleNavigation}> Let's get started ! </Button>
+        
+        {/* Login form would go here */}
+        <div className="w-full max-w-md space-y-4">
+          {/* Future login form elements */}
+          <p className="text-center mt-8">
+            Don't have an account yet?{" "}
+            <Button onClick={handleRegister} className="mt-4">Register</Button>
+          </p>
+        </div>
       </main>
       <div className="absolute bottom-8 right-8">
         <Image
