@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import jwt from 'jsonwebtoken';
+import { jwtVerify } from 'jose';
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   // Define protected routes
-  const protectedRoutes = ['/demo', '/dashboard', '/profile'];
+  const protectedRoutes = ['/dashboard', '/profile'];
   const authRoutes = ['/login', '/register'];
   
   const pathname = request.nextUrl.pathname;
@@ -16,9 +16,9 @@ export function middleware(request: NextRequest) {
 
   // Check if user is authenticated
   let isAuthenticated = false;
-  if (token) {
+  if (token && process.env.JWT_SECRET) {
     try {
-      jwt.verify(token, process.env.JWT_SECRET!);
+      await jwtVerify(token, new TextEncoder().encode(process.env.JWT_SECRET));
       isAuthenticated = true;
     } catch (error) {
       // Token is invalid or expired
@@ -34,8 +34,8 @@ export function middleware(request: NextRequest) {
   }
 
   if (isAuthRoute && isAuthenticated) {
-    // Redirect to demo/dashboard if trying to access auth routes while authenticated
-    return NextResponse.redirect(new URL('/demo', request.url));
+    // Redirect to dashboard if trying to access auth routes while authenticated
+    return NextResponse.redirect(new URL('/dashboard', request.url));
   }
 
   return NextResponse.next();

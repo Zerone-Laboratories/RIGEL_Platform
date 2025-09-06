@@ -4,6 +4,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState, useCallback } from 'react';
 import Button from '../components/button';
+import AnimatedLogo from '../components/animated-logo';
 
 interface UserData {
   id: string;
@@ -58,20 +59,42 @@ export default function Dashboard() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-lg">Loading...</div>
+      <div className="font-literata grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 relative">
+        {/* Background animated logo */}
+        <div className="fixed inset-0 flex items-center justify-center pointer-events-none opacity-40 z-0">
+          <AnimatedLogo
+            width={900}
+            height={900}
+            className="fixed"
+            loading={true}
+          />
+        </div>
+        
+        <main className="flex flex-col gap-[32px] row-start-2 items-center relative z-10">
+          <div className="text-lg">Loading...</div>
+        </main>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <div className="container mx-auto px-4 py-8">
-        <div className="max-w-4xl mx-auto">
+    <div className="font-literata grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 relative">
+      {/* Background animated logo */}
+      <div className="fixed inset-0 flex items-center justify-center pointer-events-none opacity-40 z-0">
+        <AnimatedLogo
+          width={900}
+          height={900}
+          className="fixed"
+          loading={isLoading}
+        />
+      </div>
+      
+      <main className="flex flex-col gap-[32px] row-start-2 items-center relative z-10 w-full max-w-4xl">
+        <div className="w-full">
           {/* Header */}
           <div className="flex justify-between items-center mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-              Dashboard
+            <h1 className="text-4xl sm:text-3xl font-regular text-center">
+              Welcome to <span className="font-bold"><span className=" text-5xl">RIGEL</span></span> Platform
             </h1>
             <Button 
               onClick={handleLogout}
@@ -83,54 +106,54 @@ export default function Dashboard() {
           </div>
 
           {/* Welcome Section */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
-            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
+          <div className="bg-white/10 backdrop-blur-sm rounded-lg shadow-md p-6 mb-8 border border-white/20">
+            <h2 className="text-2xl font-semibold mb-4">
               Welcome back, {userData?.name}!
             </h2>
-            <p className="text-gray-600 dark:text-gray-300">
+            <p className="text-gray-300">
               You are now logged into the RIGEL Platform.
             </p>
           </div>
 
           {/* User Information */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+          <div className="bg-white/10 backdrop-blur-sm rounded-lg shadow-md p-6 mb-8 border border-white/20">
+            <h3 className="text-xl font-semibold mb-4">
               User Information
             </h3>
             <div className="grid md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-500 dark:text-gray-400">
+                <label className="block text-sm font-medium text-gray-400">
                   Name
                 </label>
-                <p className="text-gray-900 dark:text-white">{userData?.name}</p>
+                <p className="text-white">{userData?.name}</p>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-500 dark:text-gray-400">
+                <label className="block text-sm font-medium text-gray-400">
                   Email
                 </label>
-                <p className="text-gray-900 dark:text-white">{userData?.email}</p>
+                <p className="text-white">{userData?.email}</p>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-500 dark:text-gray-400">
+                <label className="block text-sm font-medium text-gray-400">
                   Organization
                 </label>
-                <p className="text-gray-900 dark:text-white">
+                <p className="text-white">
                   {userData?.organization || 'Not specified'}
                 </p>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-500 dark:text-gray-400">
+                <label className="block text-sm font-medium text-gray-400">
                   Account Status
                 </label>
-                <p className={`${userData?.isVerified ? 'text-green-600' : 'text-yellow-600'}`}>
+                <p className={`${userData?.isVerified ? 'text-green-400' : 'text-yellow-400'}`}>
                   {userData?.isVerified ? 'Verified' : 'Pending Verification'}
                 </p>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-500 dark:text-gray-400">
+                <label className="block text-sm font-medium text-gray-400">
                   Member Since
                 </label>
-                <p className="text-gray-900 dark:text-white">
+                <p className="text-white">
                   {userData?.createdAt ? new Date(userData.createdAt).toLocaleDateString() : 'Unknown'}
                 </p>
               </div>
@@ -138,8 +161,8 @@ export default function Dashboard() {
           </div>
 
           {/* Actions */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+          <div className="bg-white/10 backdrop-blur-sm rounded-lg shadow-md p-6 border border-white/20">
+            <h3 className="text-xl font-semibold mb-4">
               Quick Actions
             </h3>
             <div className="grid md:grid-cols-3 gap-4">
@@ -155,7 +178,7 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 }
