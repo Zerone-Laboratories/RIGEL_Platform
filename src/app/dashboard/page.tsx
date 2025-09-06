@@ -2,7 +2,7 @@
 
 import { useAuth } from '../../hooks/useAuth';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import Button from '../components/button';
 
 interface UserData {
@@ -16,22 +16,12 @@ interface UserData {
 }
 
 export default function Dashboard() {
-  const { user, token, logout } = useAuth();
+  const { token, logout } = useAuth();
   const router = useRouter();
   const [userData, setUserData] = useState<UserData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string>('');
 
-  useEffect(() => {
-    if (!token) {
-      router.push('/login');
-      return;
-    }
-
-    fetchUserProfile();
-  }, [token, router]);
-
-  const fetchUserProfile = async () => {
+  const fetchUserProfile = useCallback(async () => {
     try {
       const response = await fetch('/api/user/profile', {
         headers: {
@@ -43,14 +33,23 @@ export default function Dashboard() {
         const data = await response.json();
         setUserData(data.user);
       } else {
-        setError('Failed to fetch user data');
+        console.error('Failed to fetch user data');
       }
     } catch (error) {
-      setError('Network error');
+      console.error('Network error:', error);
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [token]);
+
+  useEffect(() => {
+    if (!token) {
+      router.push('/login');
+      return;
+    }
+
+    fetchUserProfile();
+  }, [token, router, fetchUserProfile]);
 
   const handleLogout = () => {
     logout();
@@ -61,14 +60,6 @@ export default function Dashboard() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-lg">Loading...</div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-red-500">{error}</div>
       </div>
     );
   }

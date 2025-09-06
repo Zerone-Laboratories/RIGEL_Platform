@@ -1,5 +1,3 @@
-import { NextRequest, NextResponse } from 'next/server';
-
 export async function verifyCloudflareTurnstile(token: string): Promise<boolean> {
   const secretKey = process.env.CLOUDFLARE_SECRET_KEY;
   

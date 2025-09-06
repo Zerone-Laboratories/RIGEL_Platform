@@ -22,6 +22,7 @@ export function middleware(request: NextRequest) {
       isAuthenticated = true;
     } catch (error) {
       // Token is invalid or expired
+      console.error('JWT verification failed:', error);
       isAuthenticated = false;
     }
   }

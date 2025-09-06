@@ -17,10 +17,11 @@ export async function GET(request: NextRequest) {
     const token = authHeader.substring(7); // Remove 'Bearer ' prefix
 
     // Verify JWT token
-    let decoded: any;
+    let decoded: { userId: string; email: string; name: string };
     try {
-      decoded = jwt.verify(token, process.env.JWT_SECRET!);
+      decoded = jwt.verify(token, process.env.JWT_SECRET!) as { userId: string; email: string; name: string };
     } catch (error) {
+      console.error('JWT verification error:', error);
       return NextResponse.json(
         { error: 'Invalid or expired token' },
         { status: 401 }
@@ -54,7 +55,7 @@ export async function GET(request: NextRequest) {
       { status: 200 }
     );
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Get user profile error:', error);
     
     return NextResponse.json(
@@ -78,10 +79,11 @@ export async function PUT(request: NextRequest) {
     const token = authHeader.substring(7);
 
     // Verify JWT token
-    let decoded: any;
+    let decoded: { userId: string; email: string; name: string };
     try {
-      decoded = jwt.verify(token, process.env.JWT_SECRET!);
+      decoded = jwt.verify(token, process.env.JWT_SECRET!) as { userId: string; email: string; name: string };
     } catch (error) {
+      console.error('JWT verification error:', error);
       return NextResponse.json(
         { error: 'Invalid or expired token' },
         { status: 401 }
@@ -95,7 +97,7 @@ export async function PUT(request: NextRequest) {
     await connectDB();
 
     // Update user profile
-    const updateData: any = {};
+    const updateData: Record<string, string | null> = {};
     if (name) updateData.name = name.trim();
     if (organization !== undefined) updateData.organization = organization?.trim() || null;
 
@@ -128,11 +130,12 @@ export async function PUT(request: NextRequest) {
       { status: 200 }
     );
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Update user profile error:', error);
     
-    if (error.name === 'ValidationError') {
-      const validationErrors = Object.values(error.errors).map((err: any) => err.message);
+    if (error && typeof error === 'object' && 'name' in error && error.name === 'ValidationError') {
+      const mongoError = error as unknown as { errors: Record<string, { message: string }> };
+      const validationErrors = Object.values(mongoError.errors).map((err) => err.message);
       return NextResponse.json(
         { error: 'Validation failed', details: validationErrors },
         { status: 400 }

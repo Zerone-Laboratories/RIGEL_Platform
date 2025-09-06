@@ -17,10 +17,11 @@ export async function GET(request: NextRequest) {
     const token = authHeader.substring(7);
 
     // Verify JWT token
-    let decoded: any;
+    let decoded: { userId: string; email: string; name: string };
     try {
-      decoded = jwt.verify(token, process.env.JWT_SECRET!);
+      decoded = jwt.verify(token, process.env.JWT_SECRET!) as { userId: string; email: string; name: string };
     } catch (error) {
+      console.error('JWT verification error:', error);
       return NextResponse.json(
         { error: 'Invalid or expired token' },
         { status: 401 }
@@ -29,6 +30,7 @@ export async function GET(request: NextRequest) {
 
     // Check if user has admin privileges (you can implement role-based access control)
     // For now, we'll allow all authenticated users to view users list
+    console.log(`User ${decoded.email} (${decoded.userId}) is accessing users list`);
     
     // Connect to database
     await connectDB();
@@ -42,7 +44,7 @@ export async function GET(request: NextRequest) {
     const skip = (page - 1) * limit;
 
     // Build search query
-    const query: any = {};
+    const query: Record<string, unknown> = {};
     if (search) {
       query.$or = [
         { name: { $regex: search, $options: 'i' } },
@@ -84,7 +86,7 @@ export async function GET(request: NextRequest) {
       { status: 200 }
     );
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Get users error:', error);
     
     return NextResponse.json(

@@ -1,13 +1,11 @@
 "use client";
 
-import Image from "next/image";
 import Button from "../../components/button";
 import Input from "../../components/input";
 import AnimatedLogo from "../../components/animated-logo";
 import CloudflareVerification from "../../components/cloudflare-verification";
 import { useAuth } from "../../../hooks/useAuth";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { useState } from "react";
 
 export default function Login() {
@@ -154,7 +152,7 @@ export default function Login() {
           </Button>
           
           <p className="text-center mt-8">
-            Don't have an account yet?{" "}
+            Don&apos;t have an account yet?{" "}
             <Button onClick={handleRegister} size="small" className="mt-4">Register</Button>
           </p>
         </form>

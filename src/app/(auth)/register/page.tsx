@@ -1,13 +1,11 @@
 "use client";
 
-import Image from "next/image";
 import Button from "../../components/button";
 import Input from "../../components/input";
 import AnimatedLogo from "../../components/animated-logo";
 import CloudflareVerification from "../../components/cloudflare-verification";
 import { useAuth } from "../../../hooks/useAuth";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { useState } from "react";
 
 export default function Register() {
