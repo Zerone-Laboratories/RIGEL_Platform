@@ -27,7 +27,7 @@ export default function Home() {
         </h1>
         <Button onClick={handleNavigation}> Let's get started ! </Button>
       </main>
-      <div className="absolute bottom-8 right-8">
+      {/* <div className="absolute bottom-8 right-8">
         <Image
           src="/vrs_logo_without_back.svg"
           alt="VerisimilitudeAI"
@@ -35,7 +35,7 @@ export default function Home() {
           height={150}
           priority
         />
-      </div>
+      </div> */}
     </div>
   );
 }
