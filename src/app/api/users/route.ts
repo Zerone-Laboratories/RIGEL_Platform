@@ -5,16 +5,19 @@ import User from '@/models/User';
 
 export async function GET(request: NextRequest) {
   try {
-    // Get token from Authorization header
+    // Get token from cookies or Authorization header
+    const cookieToken = request.cookies.get('auth-token')?.value;
     const authHeader = request.headers.get('authorization');
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    const bearerToken = authHeader?.startsWith('Bearer ') ? authHeader.substring(7) : null;
+    
+    const token = cookieToken || bearerToken;
+    
+    if (!token) {
       return NextResponse.json(
         { error: 'Authorization token required' },
         { status: 401 }
       );
     }
-
-    const token = authHeader.substring(7);
 
     // Verify JWT token
     let decoded: { userId: string; email: string; name: string };

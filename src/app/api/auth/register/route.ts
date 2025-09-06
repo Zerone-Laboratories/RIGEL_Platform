@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
 
     await newUser.save();
 
-    // Generate JWT token
+    // Generate JWT token with 1 month expiration
     const token = jwt.sign(
       { 
         userId: newUser._id, 
@@ -86,7 +86,7 @@ export async function POST(request: NextRequest) {
         name: newUser.name
       },
       process.env.JWT_SECRET!,
-      { expiresIn: '7d' }
+      { expiresIn: '30d' }
     );
 
     // Return success response (without password)
@@ -99,7 +99,8 @@ export async function POST(request: NextRequest) {
       createdAt: newUser.createdAt
     };
 
-    return NextResponse.json(
+    // Create response with cookie
+    const response = NextResponse.json(
       { 
         message: 'User registered successfully',
         user: userResponse,
@@ -107,6 +108,20 @@ export async function POST(request: NextRequest) {
       },
       { status: 201 }
     );
+
+    // Set HTTP-only cookie that expires in 1 month
+    const oneMonthFromNow = new Date();
+    oneMonthFromNow.setMonth(oneMonthFromNow.getMonth() + 1);
+    
+    response.cookies.set('auth-token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      expires: oneMonthFromNow,
+      path: '/'
+    });
+
+    return response;
 
   } catch (error: unknown) {
     console.error('Registration error:', error);

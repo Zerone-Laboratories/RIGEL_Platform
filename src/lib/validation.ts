@@ -1,4 +1,12 @@
 export async function verifyCloudflareTurnstile(token: string): Promise<boolean> {
+  // Bypass Turnstile verification in development mode
+  const bypassTurnstile = process.env.NEXT_PUBLIC_BYPASS_TURNSTILE === 'true';
+  
+  if (bypassTurnstile && token.startsWith('dev-bypass-token-')) {
+    console.log('Cloudflare Turnstile bypassed for development');
+    return true;
+  }
+
   const secretKey = process.env.CLOUDFLARE_SECRET_KEY;
   
   if (!secretKey) {

@@ -87,6 +87,7 @@ export default function Login() {
           width={900}
           height={900}
           className="fixed"
+          loading={isLoading}
         />
       </div>
       

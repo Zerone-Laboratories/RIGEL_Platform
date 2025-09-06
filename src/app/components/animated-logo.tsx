@@ -6,15 +6,24 @@ interface AnimatedLogoProps {
   width?: number;
   height?: number;
   className?: string;
+  loading?: boolean;
 }
 
 export default function AnimatedLogo({ 
   width = 300, 
   height = 300, 
-  className = "" 
+  className = "",
+  loading = false
 }: AnimatedLogoProps) {
+  const containerClass = `inline-block ${className} ${loading ? 'loading' : ''}`;
+  
+  // Debug logging
+  React.useEffect(() => {
+    console.log('AnimatedLogo loading state changed:', loading);
+  }, [loading]);
+  
   return (
-    <div className={`inline-block ${className}`} style={{ overflow: 'visible' }}>
+    <div className={containerClass} style={{ overflow: 'visible' }}>
       <style jsx>{`
         @keyframes rotateClockwise {
           from { transform: rotate(0deg); }
@@ -26,6 +35,7 @@ export default function AnimatedLogo({
           to { transform: rotate(-360deg); }
         }
         
+        /* Normal speed classes */
         .rotate-cw-20 {
           animation: rotateClockwise 20s linear infinite;
           transform-origin: 200px 200px;
@@ -74,6 +84,47 @@ export default function AnimatedLogo({
         .rotate-ccw-40 {
           animation: rotateCounterClockwise 40s linear infinite;
           transform-origin: 200px 200px;
+        }
+        
+        /* Loading speed overrides */
+        .loading .rotate-cw-20 {
+          animation: rotateClockwise 2s linear infinite;
+        }
+        
+        .loading .rotate-ccw-18 {
+          animation: rotateCounterClockwise 1.8s linear infinite;
+        }
+        
+        .loading .rotate-cw-25 {
+          animation: rotateClockwise 2.5s linear infinite;
+        }
+        
+        .loading .rotate-ccw-16 {
+          animation: rotateCounterClockwise 1.6s linear infinite;
+        }
+        
+        .loading .rotate-cw-30 {
+          animation: rotateClockwise 3s linear infinite;
+        }
+        
+        .loading .rotate-ccw-22 {
+          animation: rotateCounterClockwise 2.2s linear infinite;
+        }
+        
+        .loading .rotate-cw-28 {
+          animation: rotateClockwise 2.8s linear infinite;
+        }
+        
+        .loading .rotate-ccw-12 {
+          animation: rotateCounterClockwise 1.2s linear infinite;
+        }
+        
+        .loading .rotate-cw-35 {
+          animation: rotateClockwise 3.5s linear infinite;
+        }
+        
+        .loading .rotate-ccw-40 {
+          animation: rotateCounterClockwise 4s linear infinite;
         }
       `}</style>
       

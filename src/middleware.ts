@@ -11,7 +11,7 @@ export function middleware(request: NextRequest) {
   const isAuthRoute = authRoutes.some(route => pathname.startsWith(route));
 
   // Get token from cookies or Authorization header
-  const token = request.cookies.get('token')?.value || 
+  const token = request.cookies.get('auth-token')?.value || 
                 request.headers.get('authorization')?.replace('Bearer ', '');
 
   // Check if user is authenticated

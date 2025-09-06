@@ -149,6 +149,7 @@ export default function Register() {
           width={900}
           height={900}
           className="fixed"
+          loading={isLoading}
         />
       </div>
       
