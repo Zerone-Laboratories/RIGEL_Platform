@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState, useCallback } from 'react';
 import Button from '../components/button';
 import AnimatedLogo from '../components/animated-logo';
+import Navbar from '../components/navbar';
 
 interface UserData {
   id: string;
@@ -59,61 +60,52 @@ export default function Dashboard() {
 
   if (isLoading) {
     return (
-      <div className="font-literata grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 relative">
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900">
+        <Navbar currentPage="dashboard" />
+        <div className="font-literata grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-[calc(100vh-64px)] p-8 pb-20 gap-16 sm:p-20 relative">
+          {/* Background animated logo */}
+          <div className="fixed inset-0 flex items-center justify-center pointer-events-none opacity-40 z-0">
+            <AnimatedLogo
+              width={900}
+              height={900}
+              className="fixed"
+              loading={true}
+            />
+          </div>
+          
+          <main className="flex flex-col gap-[32px] row-start-2 items-center relative z-10">
+            <div className="text-lg">Loading...</div>
+          </main>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900">
+      <Navbar currentPage="dashboard" />
+      <div className="font-literata grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-[calc(100vh-64px)] p-8 pb-20 gap-16 sm:p-20 relative">
         {/* Background animated logo */}
         <div className="fixed inset-0 flex items-center justify-center pointer-events-none opacity-40 z-0">
           <AnimatedLogo
             width={900}
             height={900}
             className="fixed"
-            loading={true}
+            loading={isLoading}
           />
         </div>
         
-        <main className="flex flex-col gap-[32px] row-start-2 items-center relative z-10">
-          <div className="text-lg">Loading...</div>
-        </main>
-      </div>
-    );
-  }
-
-  return (
-    <div className="font-literata grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 relative">
-      {/* Background animated logo */}
-      <div className="fixed inset-0 flex items-center justify-center pointer-events-none opacity-40 z-0">
-        <AnimatedLogo
-          width={900}
-          height={900}
-          className="fixed"
-          loading={isLoading}
-        />
-      </div>
-      
-      <main className="flex flex-col gap-[32px] row-start-2 items-center relative z-10 w-full max-w-4xl">
-        <div className="w-full">
-          {/* Header */}
-          <div className="flex justify-between items-center mb-8">
-            <h1 className="text-4xl sm:text-3xl font-regular text-center">
-              Welcome to <span className="font-bold"><span className=" text-5xl">RIGEL</span></span> Platform
-            </h1>
-            <Button 
-              onClick={handleLogout}
-              size="medium"
-              className="bg-red-600 hover:bg-red-700"
-            >
-              Logout
-            </Button>
-          </div>
-
-          {/* Welcome Section */}
-          <div className="bg-white/10 backdrop-blur-sm rounded-lg shadow-md p-6 mb-8 border border-white/20">
-            <h2 className="text-2xl font-semibold mb-4">
-              Welcome back, {userData?.name}!
-            </h2>
-            <p className="text-gray-300">
-              You are now logged into the RIGEL Platform.
-            </p>
-          </div>
+        <main className="flex flex-col gap-[32px] row-start-2 items-center relative z-10 w-full max-w-4xl">
+          <div className="w-full">
+            {/* Welcome Section */}
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg shadow-md p-6 mb-8 border border-white/20">
+              <h2 className="text-2xl font-semibold mb-4">
+                Welcome back, {userData?.name}!
+              </h2>
+              <p className="text-gray-300">
+                You are now logged into the RIGEL Platform.
+              </p>
+            </div>
 
           {/* User Information */}
           <div className="bg-white/10 backdrop-blur-sm rounded-lg shadow-md p-6 mb-8 border border-white/20">
@@ -179,6 +171,7 @@ export default function Dashboard() {
           </div>
         </div>
       </main>
+      </div>
     </div>
   );
 }

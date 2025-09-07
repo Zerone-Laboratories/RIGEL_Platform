@@ -25,6 +25,7 @@ export default function Home() {
         <h1 className="text-4xl sm:text-5xl font-regular text-center">
           Welcome to <span className="font-bold">RIGEL</span> API platform !
         </h1>
+        <h3 className="text-yellow-500">RIGEL platform is still under contruction !</h3>
         <Button onClick={handleNavigation}> Let&apos;s get started ! </Button>
       </main>
       {/* <div className="absolute bottom-8 right-8">
