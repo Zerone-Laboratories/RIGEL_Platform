@@ -1,10 +1,10 @@
 "use client";
 
-import Button from "../../components/button";
-import Input from "../../components/input";
-import AnimatedLogo from "../../components/animated-logo";
-import CloudflareVerification from "../../components/cloudflare-verification";
-import { useAuth } from "../../../hooks/useAuth";
+import Button from "@/components/button";
+import Input from "@/components/input";
+import AnimatedLogo from "@/components/animated-logo";
+import CloudflareVerification from "@/components/cloudflare-verification";
+import { useAuth } from "@/hooks/useAuth";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 

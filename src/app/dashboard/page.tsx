@@ -1,11 +1,11 @@
 'use client';
 
-import { useAuth } from '../../hooks/useAuth';
+import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState, useCallback } from 'react';
-import Button from '../components/button';
-import AnimatedLogo from '../components/animated-logo';
-import Navbar from '../components/navbar';
+import Button from '@/components/button';
+import AnimatedLogo from '@/components/animated-logo';
+import Navbar from '@/components/navbar';
 
 interface UserData {
   id: string;
